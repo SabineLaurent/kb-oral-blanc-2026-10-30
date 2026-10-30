@@ -1,0 +1,42 @@
+{
+  "window_ends": [
+    "2026-10-10"
+  ],
+  "rows": [
+    {
+      "window_end": "2026-10-10",
+      "repository_id": 1209966933,
+      "repository_name": "morluto/rea",
+      "stars_gained": 1087,
+      "forks_gained": 215
+    },
+    {
+      "window_end": "2026-10-10",
+      "repository_id": 1398080271,
+      "repository_name": "storytold/photocraft",
+      "stars_gained": 449,
+      "forks_gained": 64
+    },
+    {
+      "window_end": "2026-10-10",
+      "repository_id": 1322250666,
+      "repository_name": "boykopovar/AnyPS5",
+      "stars_gained": 318,
+      "forks_gained": 17
+    },
+    {
+      "window_end": "2026-10-10",
+      "repository_id": 928981629,
+      "repository_name": "rhtap-perf-test/nodejs-devfile-sample2",
+      "stars_gained": 0,
+      "forks_gained": 13
+    },
+    {
+      "window_end": "2026-10-10",
+      "repository_id": 1035334306,
+      "repository_name": "wwwwwwworld/solana-trading-bot-v3",
+      "stars_gained": 0,
+      "forks_gained": 70
+    }
+  ]
+}

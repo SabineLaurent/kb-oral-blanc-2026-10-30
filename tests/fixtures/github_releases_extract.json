@@ -1,0 +1,80 @@
+[
+  {
+    "url": "https://api.github.com/repos/anthropics/claude-code/releases/401174143",
+    "assets_url": "https://api.github.com/repos/anthropics/claude-code/releases/401174143/assets",
+    "upload_url": "https://uploads.github.com/repos/anthropics/claude-code/releases/401174143/assets{?name,label}",
+    "html_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.287",
+    "id": 401174143,
+    "author": {
+      "login": "example-user",
+      "id": 1,
+      "type": "User"
+    },
+    "node_id": "RE_kwDON91aY84X6W5_",
+    "tag_name": "v2.1.287",
+    "target_commitish": "main",
+    "name": "v2.1.287",
+    "draft": false,
+    "immutable": true,
+    "prerelease": false,
+    "created_at": "2026-10-01T17:59:57Z",
+    "updated_at": "2026-10-01T18:43:19Z",
+    "published_at": "2026-10-01T18:00:22Z",
+    "assets": [],
+    "tarball_url": "https://api.github.com/repos/anthropics/claude-code/tarball/v2.1.287",
+    "zipball_url": "https://api.github.com/repos/anthropics/claude-code/zipball/v2.1.287",
+    "body": "## What's changed\n\n- Added Claude Mods: plugins may now modify deeper behavior\n- Added You should know, a built-in mod where a side agent watches your back and flags things you or Claude might miss. T"
+  },
+  {
+    "url": "https://api.github.com/repos/anthropics/claude-code/releases/400266224",
+    "assets_url": "https://api.github.com/repos/anthropics/claude-code/releases/400266224/assets",
+    "upload_url": "https://uploads.github.com/repos/anthropics/claude-code/releases/400266224/assets{?name,label}",
+    "html_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.286",
+    "id": 400266224,
+    "author": {
+      "login": "example-user",
+      "id": 1,
+      "type": "User"
+    },
+    "node_id": "RE_kwDON91aY84X25Pw",
+    "tag_name": "v2.1.286",
+    "target_commitish": "main",
+    "name": "v2.1.286",
+    "draft": false,
+    "immutable": true,
+    "prerelease": false,
+    "created_at": "2026-09-30T19:09:54Z",
+    "updated_at": "2026-09-30T19:10:13Z",
+    "published_at": "2026-09-30T19:10:13Z",
+    "assets": [],
+    "tarball_url": "https://api.github.com/repos/anthropics/claude-code/tarball/v2.1.286",
+    "zipball_url": "https://api.github.com/repos/anthropics/claude-code/zipball/v2.1.286",
+    "body": "## What's changed\n\n- Added a count such as \"2 of 5\" to the permission prompt when several permission requests stack up\n- Added mouse support for the \"N more\" rows of lists in fullscreen mode: click on"
+  },
+  {
+    "url": "https://api.github.com/repos/anthropics/claude-code/releases/399375132",
+    "assets_url": "https://api.github.com/repos/anthropics/claude-code/releases/399375132/assets",
+    "upload_url": "https://uploads.github.com/repos/anthropics/claude-code/releases/399375132/assets{?name,label}",
+    "html_url": "https://github.com/anthropics/claude-code/releases/tag/v2.1.285",
+    "id": 399375132,
+    "author": {
+      "login": "example-user",
+      "id": 1,
+      "type": "User"
+    },
+    "node_id": "RE_kwDON91aY84Xzfsc",
+    "tag_name": "v2.1.285",
+    "target_commitish": "main",
+    "name": "v2.1.285",
+    "draft": false,
+    "immutable": true,
+    "prerelease": false,
+    "created_at": "2026-09-29T19:27:09Z",
+    "updated_at": "2026-09-29T19:27:30Z",
+    "published_at": "2026-09-29T19:27:30Z",
+    "assets": [],
+    "tarball_url": "https://api.github.com/repos/anthropics/claude-code/tarball/v2.1.285",
+    "zipball_url": "https://api.github.com/repos/anthropics/claude-code/zipball/v2.1.285",
+    "body": "## What's changed\n\n- Added `CLAUDE_CODE_DISABLE_WEB_FETCH` environment variable to turn off the WebFetch tool\n- Added `claude --desktop` to open the Claude desktop app on the current directory, or on "
+  }
+]

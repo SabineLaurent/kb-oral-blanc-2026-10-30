@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/" xmlns:arxiv="http://arxiv.org/schemas/atom" xmlns="http://www.w3.org/2005/Atom">
+  <id>https://arxiv.org/api/T+3X4dGKqITLJLdBspyrVgPtz7Y</id>
+  <title>arXiv Query: search_query=cat:cs.CR AND cat:cs.AI AND (abs:"prompt injection" OR abs:jailbreak OR abs:"red teaming" OR abs:"adversarial attack" OR abs:backdoor OR abs:poisoning OR abs:"membership inference" OR abs:"agent security") AND submittedDate:"202609250000 TO 202610021500"&amp;id_list=&amp;start=0&amp;max_results=2000</title>
+  <updated>2026-10-02T15:17:02Z</updated>
+  <link href="https://arxiv.org/api/query?search_query=cat:cs.CR+AND+(cat:cs.AI+AND+((abs:%22prompt+injection%22+OR+(abs:jailbreak+OR+(abs:%22red+teaming%22+OR+(abs:%22adversarial+attack%22+OR+(abs:backdoor+OR+(abs:poisoning+OR+(abs:%22membership+inference%22+OR+abs:%22agent+security%22)))))))+AND+submittedDate:%22202609250000+TO+202610021500%22))&amp;start=0&amp;max_results=2000&amp;id_list=" type="application/atom+xml"/>
+  <opensearch:itemsPerPage>2000</opensearch:itemsPerPage>
+  <opensearch:totalResults>3</opensearch:totalResults>
+  <opensearch:startIndex>0</opensearch:startIndex>
+  <entry>
+    <id>http://arxiv.org/abs/2609.31282v1</id>
+    <title>Resource-Optimized and Energy-Aware Agentic AI Framework Anchored on Blockchain for Secure Software Supply Chains</title>
+    <updated>2026-09-25T13:53:50Z</updated>
+    <link href="https://arxiv.org/abs/2609.31282v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.31282v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>This paper proposes a blockchain-backed agentic security framework designed to safeguard the complete software development lifecycle (SDLC) while also securing the agentic AI components responsible for monitoring it. The framework coordinates a set of specialised security agents, covering source integrity, dependency and SBOM analysis, CI configura tion auditing, artifact verification, and runtime policy evaluation, each supported by a large language model (LLM) that interprets artefacts, reasons over tool outputs, and produces structured security reports. To ensure agent trustworthiness, every agent generates a cryptographically signed attestation that is recorded in a permissioned blockchain via smart contracts, including an agent registry, an immutable attestation log, and an enforceable release-policy module. Communication among agents and with blockchain nodes is secured using a consortium-operated certificate authority, ensuring authenticated and tamper-resistant interactions. A detailed use-case and sequence flow demonstrate how a source code security agent performs analysis, anchors its attestation on-chain, and triggers a verifiable allow/block deployment decision. The proposed framework of fers decentralised integrity transparent provenance, uninterrupted security assurance and a generalisable architecture to incorporate the agentic AI into the modern software supply chain security.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-25T13:53:50Z</published>
+    <arxiv:comment>Accepted for publication in the International Journal of Energy, Environment, and Economics. 27 pages, 8 figures, 2 tables</arxiv:comment>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Toqeer Ali Syed</name>
+    </author>
+    <author>
+      <name>Asadullah Abdullah Khan</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2609.33401v2</id>
+    <title>Evaluating System One Models for Agent Security Decisions: Reliability, Calibration, and Selective Automation</title>
+    <updated>2026-09-29T16:41:24Z</updated>
+    <link href="https://arxiv.org/abs/2609.33401v2" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2609.33401v2" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Model-based judges support agent security by detecting prompt injections, assessing interaction risks, and screening harmful requests. System One models select from predefined answers and report probabilities that software can use to allow, block, or review inputs, but the reliability of these automated decisions remains unclear. We evaluate Jev, Laya, Decider, and Bespoke Nimble against specialized classifiers and language-model judges, examining decision accuracy, probability calibration, and selective automation. We draw the following conclusions. (1) Strong overall performance and favorable aggregate calibration can hide failures concentrated in particular attack groups, including attacks classified as safe with high confidence. (2) The evaluated adapted configurations do not consistently improve classification over their base models across tasks. (3) Under the strictest evaluated error limits, the policies allow few inputs automatically, and separate allow and block thresholds increase automation mainly through more blocks. Passing confirmation does not ensure that these limits hold on test. (4) Judges can detect attacks missed by another model, but may also falsely flag more benign inputs and share the other model's high-confidence errors. These findings support evaluating model accuracy, probability calibration, and the resulting allow/block/review decisions together.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.SE" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-09-27T09:30:13Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Yixuan Liu</name>
+    </author>
+  </entry>
+  <entry>
+    <id>http://arxiv.org/abs/2610.01349v1</id>
+    <title>PACE: Provenance-Aware Capability Enforcement for Tool-Using LLM Agents</title>
+    <updated>2026-10-01T09:18:05Z</updated>
+    <link href="https://arxiv.org/abs/2610.01349v1" rel="alternate" type="text/html"/>
+    <link href="https://arxiv.org/pdf/2610.01349v1" rel="related" type="application/pdf" title="pdf"/>
+    <summary>Tool-using large language model (LLM) agents turn generated text into real side effects, so poisoned tool metadata, retrieved pages, memory, and reusable skills can steer the next call. Vetting an artifact before admission does not settle this. A safe variant and a leaking variant can produce the same admission evidence, and a sound gate then cannot relax that site for either. We make that condition precise, which leaves the last boundary a deployment can still act on. We present Provenance-Aware Capability Enforcement (PACE), which mediates every tool call immediately before it executes. Path confinement proposes an executable cut of represented influence paths, while capability and effect verification checks schema-defined effects against authority compiled from the authenticated request. We distinguish the certified execution contract from the evaluated configuration, which can restore an authorized call after a proposed block or apply a declared repair. Confinement requires the final action to preserve the certified cut. On eight executable agent-security benchmarks with three target-model families, the evaluated configuration gives strictly lowest attack success in 62 of 79 eligible attack columns and ties in 14; full-benchmark native utility loses at most three points relative to the undefended agent. A complete ablation over 1167 paired cases attributes most security gains to effect verification and refusal control to boundary adaptation. A reduced-scale adaptive search succeeds on 0/30 out-of-authority targets against the defense.</summary>
+    <category term="cs.CR" scheme="http://arxiv.org/schemas/atom"/>
+    <category term="cs.AI" scheme="http://arxiv.org/schemas/atom"/>
+    <published>2026-10-01T09:18:05Z</published>
+    <arxiv:primary_category term="cs.CR"/>
+    <author>
+      <name>Fengpeng Li</name>
+    </author>
+    <author>
+      <name>Qizhou Wang</name>
+    </author>
+    <author>
+      <name>Yuke Hu</name>
+    </author>
+    <author>
+      <name>Kemou Li</name>
+    </author>
+    <author>
+      <name>Jun Liu</name>
+    </author>
+    <author>
+      <name>Haiwei Wu</name>
+    </author>
+    <author>
+      <name>Jiantao Zhou</name>
+    </author>
+    <author>
+      <name>Di Wang</name>
+    </author>
+  </entry>
+</feed>

@@ -1,0 +1,1228 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "K-B data API",
+    "description": "Thank you to arXiv for use of its open access interoperability.",
+    "version": "0.5.0"
+  },
+  "paths": {
+    "/items": {
+      "get": {
+        "tags": [
+          "items"
+        ],
+        "summary": "List Items",
+        "description": "A page of the items, the newest first by the date the source gives.",
+        "operationId": "list_items_items_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "enum": [
+                      "paper",
+                      "vulnerability",
+                      "newsletter_article",
+                      "release",
+                      "advisory",
+                      "zotero_entry",
+                      "clip"
+                    ],
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Kind"
+            }
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Since"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10000,
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemPageSchema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid_api_key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "invalid_parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidParameterSchema"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "database_error, internal_error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "database_missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/items/{item_id}": {
+      "get": {
+        "tags": [
+          "items"
+        ],
+        "summary": "Read Item",
+        "description": "An item, with what its kind serves beyond the list.",
+        "operationId": "read_item_items__item_id__get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 9223372036854775807,
+              "minimum": -9223372036854775808,
+              "title": "Item Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/PaperDetailSchema"
+                    },
+                    {
+                      "$ref": "#/components/schemas/VulnerabilityDetailSchema"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ReleaseDetailSchema"
+                    },
+                    {
+                      "$ref": "#/components/schemas/AdvisoryDetailSchema"
+                    },
+                    {
+                      "$ref": "#/components/schemas/NewsletterArticleDetailSchema"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ZoteroEntryDetailSchema"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ClipDetailSchema"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "kind",
+                    "mapping": {
+                      "paper": "#/components/schemas/PaperDetailSchema",
+                      "vulnerability": "#/components/schemas/VulnerabilityDetailSchema",
+                      "release": "#/components/schemas/ReleaseDetailSchema",
+                      "advisory": "#/components/schemas/AdvisoryDetailSchema",
+                      "newsletter_article": "#/components/schemas/NewsletterArticleDetailSchema",
+                      "zotero_entry": "#/components/schemas/ZoteroEntryDetailSchema",
+                      "clip": "#/components/schemas/ClipDetailSchema"
+                    }
+                  },
+                  "title": "Response Read Item Items  Item Id  Get"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid_api_key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "invalid_parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidParameterSchema"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "database_error, internal_error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "database_missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "item_not_found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/trends": {
+      "get": {
+        "tags": [
+          "trends"
+        ],
+        "summary": "List Trends",
+        "description": "The trends of a window, the latest in the base when none is given.",
+        "operationId": "list_trends_trends_get",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "window_end",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Window End"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TrendWindowSchema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid_api_key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "invalid_parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidParameterSchema"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "database_error, internal_error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "database_missing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "trend_window_not_found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdvisoryDetailSchema": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "const": "advisory",
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "source_date": {
+            "type": "string",
+            "title": "Source Date"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "withdrawn_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Withdrawn At",
+            "description": "Withdrawn from a catalog (vulnerability, Zotero entry). A date of K-B: the collection that saw the change."
+          },
+          "ghsa_id": {
+            "type": "string",
+            "title": "Ghsa Id"
+          },
+          "cve_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cve Id"
+          },
+          "exploited": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exploited",
+            "description": "The CVE is in the CISA KEV catalog, withdrawn since or not; false says absent from the catalog, not unexploited; null without CVE."
+          },
+          "packages": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Packages"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "source_date",
+          "url",
+          "withdrawn_at",
+          "ghsa_id",
+          "cve_id",
+          "exploited",
+          "packages"
+        ],
+        "title": "AdvisoryDetailSchema"
+      },
+      "ClipDetailSchema": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "const": "clip",
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "source_date": {
+            "type": "string",
+            "title": "Source Date"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "withdrawn_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Withdrawn At",
+            "description": "Withdrawn from a catalog (vulnerability, Zotero entry). A date of K-B: the collection that saw the change."
+          },
+          "published_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published At",
+            "description": "A date of the page kept (published of Web Clipper): a day, at midnight UTC; null when the page gives none."
+          },
+          "body": {
+            "type": "string",
+            "title": "Body",
+            "description": "The text kept, Markdown, as Web Clipper wrote it."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "source_date",
+          "url",
+          "withdrawn_at",
+          "published_at",
+          "body"
+        ],
+        "title": "ClipDetailSchema"
+      },
+      "ErrorSchema": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "title": "Error"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorSchema"
+      },
+      "HighlightSchema": {
+        "properties": {
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comment"
+          },
+          "highlighted_at": {
+            "type": "string",
+            "title": "Highlighted At",
+            "description": "A date of Zotero: the highlight was made."
+          },
+          "revised_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revised At",
+            "description": "A date of K-B: the collection that saw the change."
+          },
+          "withdrawn_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Withdrawn At",
+            "description": "A date of K-B: the collection that saw the change."
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "comment",
+          "highlighted_at",
+          "revised_at",
+          "withdrawn_at"
+        ],
+        "title": "HighlightSchema"
+      },
+      "InvalidParameterSchema": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "title": "Error"
+          },
+          "parameters": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Parameters"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error",
+          "parameters"
+        ],
+        "title": "InvalidParameterSchema"
+      },
+      "ItemPageSchema": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ListedItemSchema"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_offset": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Offset"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "next_offset"
+        ],
+        "title": "ItemPageSchema"
+      },
+      "ListedItemSchema": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "paper",
+              "vulnerability",
+              "newsletter_article",
+              "release",
+              "advisory",
+              "zotero_entry",
+              "clip"
+            ],
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "source_date": {
+            "type": "string",
+            "title": "Source Date"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "withdrawn_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Withdrawn At",
+            "description": "Withdrawn from a catalog (vulnerability, Zotero entry). A date of K-B: the collection that saw the change."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "source_date",
+          "url",
+          "withdrawn_at"
+        ],
+        "title": "ListedItemSchema"
+      },
+      "NewsletterArticleDetailSchema": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "const": "newsletter_article",
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "source_date": {
+            "type": "string",
+            "title": "Source Date"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "withdrawn_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Withdrawn At",
+            "description": "Withdrawn from a catalog (vulnerability, Zotero entry). A date of K-B: the collection that saw the change."
+          },
+          "edition": {
+            "type": "string",
+            "title": "Edition"
+          },
+          "edition_date": {
+            "type": "string",
+            "title": "Edition Date"
+          },
+          "rank": {
+            "type": "integer",
+            "title": "Rank"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "source_date",
+          "url",
+          "withdrawn_at",
+          "edition",
+          "edition_date",
+          "rank",
+          "summary"
+        ],
+        "title": "NewsletterArticleDetailSchema"
+      },
+      "PaperDetailSchema": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "const": "paper",
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "source_date": {
+            "type": "string",
+            "title": "Source Date"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "withdrawn_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Withdrawn At",
+            "description": "Withdrawn from a catalog (vulnerability, Zotero entry). A date of K-B: the collection that saw the change."
+          },
+          "arxiv_id": {
+            "type": "string",
+            "title": "Arxiv Id"
+          },
+          "authors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Authors"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "arxiv_updated_at": {
+            "type": "string",
+            "title": "Arxiv Updated At",
+            "description": "A date of arXiv: the last version of the paper."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "source_date",
+          "url",
+          "withdrawn_at",
+          "arxiv_id",
+          "authors",
+          "summary",
+          "arxiv_updated_at"
+        ],
+        "title": "PaperDetailSchema"
+      },
+      "ReleaseDetailSchema": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "const": "release",
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "source_date": {
+            "type": "string",
+            "title": "Source Date"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "withdrawn_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Withdrawn At",
+            "description": "Withdrawn from a catalog (vulnerability, Zotero entry). A date of K-B: the collection that saw the change."
+          },
+          "release_id": {
+            "type": "integer",
+            "title": "Release Id"
+          },
+          "repository_name": {
+            "type": "string",
+            "title": "Repository Name"
+          },
+          "tag_name": {
+            "type": "string",
+            "title": "Tag Name"
+          },
+          "body": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Body"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "source_date",
+          "url",
+          "withdrawn_at",
+          "release_id",
+          "repository_name",
+          "tag_name",
+          "body"
+        ],
+        "title": "ReleaseDetailSchema"
+      },
+      "TrendSchema": {
+        "properties": {
+          "repository_id": {
+            "type": "integer",
+            "title": "Repository Id"
+          },
+          "repository_name": {
+            "type": "string",
+            "title": "Repository Name"
+          },
+          "stars_gained": {
+            "type": "integer",
+            "title": "Stars Gained"
+          },
+          "forks_gained": {
+            "type": "integer",
+            "title": "Forks Gained"
+          }
+        },
+        "type": "object",
+        "required": [
+          "repository_id",
+          "repository_name",
+          "stars_gained",
+          "forks_gained"
+        ],
+        "title": "TrendSchema"
+      },
+      "TrendWindowSchema": {
+        "properties": {
+          "window_end": {
+            "type": "string",
+            "format": "date",
+            "title": "Window End",
+            "description": "The last day of the window of 3 days."
+          },
+          "trends": {
+            "items": {
+              "$ref": "#/components/schemas/TrendSchema"
+            },
+            "type": "array",
+            "title": "Trends"
+          }
+        },
+        "type": "object",
+        "required": [
+          "window_end",
+          "trends"
+        ],
+        "title": "TrendWindowSchema"
+      },
+      "VulnerabilityDetailSchema": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "const": "vulnerability",
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "source_date": {
+            "type": "string",
+            "title": "Source Date"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "withdrawn_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Withdrawn At",
+            "description": "Withdrawn from a catalog (vulnerability, Zotero entry). A date of K-B: the collection that saw the change."
+          },
+          "cve_id": {
+            "type": "string",
+            "title": "Cve Id"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "vendor": {
+            "type": "string",
+            "title": "Vendor"
+          },
+          "product": {
+            "type": "string",
+            "title": "Product"
+          },
+          "ransomware_use": {
+            "type": "string",
+            "enum": [
+              "Known",
+              "Unknown"
+            ],
+            "title": "Ransomware Use"
+          },
+          "revised_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revised At",
+            "description": "A date of K-B: the collection that saw the change."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "source_date",
+          "url",
+          "withdrawn_at",
+          "cve_id",
+          "description",
+          "vendor",
+          "product",
+          "ransomware_use",
+          "revised_at"
+        ],
+        "title": "VulnerabilityDetailSchema"
+      },
+      "ZoteroEntryDetailSchema": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "const": "zotero_entry",
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "source_date": {
+            "type": "string",
+            "title": "Source Date"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          },
+          "withdrawn_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Withdrawn At",
+            "description": "Withdrawn from a catalog (vulnerability, Zotero entry). A date of K-B: the collection that saw the change."
+          },
+          "zotero_key": {
+            "type": "string",
+            "title": "Zotero Key"
+          },
+          "item_type": {
+            "type": "string",
+            "title": "Item Type"
+          },
+          "arxiv_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Arxiv Id"
+          },
+          "revised_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revised At",
+            "description": "A date of K-B: the collection that saw the change."
+          },
+          "highlights": {
+            "items": {
+              "$ref": "#/components/schemas/HighlightSchema"
+            },
+            "type": "array",
+            "title": "Highlights"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "title",
+          "source_date",
+          "url",
+          "withdrawn_at",
+          "zotero_key",
+          "item_type",
+          "arxiv_id",
+          "revised_at",
+          "highlights"
+        ],
+        "title": "ZoteroEntryDetailSchema"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "description": "One key per client, sent as `Authorization: Bearer <key>`. A missing or unknown key gets the same 401 `invalid_api_key`. No login route and no token lifetime: a key is revoked by removing it and restarting the API.",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

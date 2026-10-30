@@ -1,0 +1,28 @@
+# Secrets
+.env
+.env.*
+!.env.example
+!.env.e2e_test.example
+
+# Environnement Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Claude Code, local
+.claude/settings.local.json
+.claude/.cc-writes
+
+# macOS
+.DS_Store
+
+# Données locales (KB_DATA_DIR pendant les essais)
+temp/
+
+# Rapport HTML des tests de bout en bout (pytest-html), jamais suivi : il garde leur sortie
+/reports/

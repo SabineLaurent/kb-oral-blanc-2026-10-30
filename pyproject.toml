@@ -1,0 +1,55 @@
+[project]
+name = "k-b"
+version = "0.1.0"
+description = "Une bibliothèque de veille tech qui se range toute seule."
+readme = "README.md"
+authors = [
+    { name = "Sabine Laurent" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "beautifulsoup4>=4.15.0",
+    "fastapi>=0.122",
+    "google-cloud-bigquery>=3.46,<4",
+    "httpx2>=2.13.1",
+    "opentelemetry-api>=1.45.1,<1.46",
+    "opentelemetry-exporter-otlp-proto-http>=1.45.1,<1.46",
+    "opentelemetry-sdk>=1.45.1,<1.46",
+    "pydantic>=2.13.5",
+    "pyyaml>=6.0.3",
+    "requests>=2.34.2",
+    "uvicorn>=0.54.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.13,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.0",
+    "openapi-spec-validator>=0.9.0",
+    "pytest>=9.1.1",
+    "pytest-html>=4.2.0",
+    "ruff>=0.16.10",
+    "types-pyyaml>=6.0.12.20260906",
+]
+
+[project.scripts]
+kb = "k_b.cli:main"
+
+[tool.ruff.lint]
+extend-select = ["I", "B", "UP", "S", "N", "SIM", "C90"]
+# Règles actives par défaut depuis ruff 0.16, hors de .claude/rules/outillage.md : désactivées
+# tant que Sabine n'a pas décidé (2026-10-06).
+ignore = ["TRY004", "DTZ001", "RUF012", "PLR0402", "PLW1510"]
+
+[tool.ruff.format]
+# Les notes datées de docs/ recopient le code tel qu'il était : ruff ne formate que le Python.
+exclude = ["*.md"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # assert est l'outil des tests
+
+[tool.mypy]
+files = ["src"]

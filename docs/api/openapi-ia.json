@@ -1,0 +1,455 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "K-B AI API",
+    "version": "0.4.0"
+  },
+  "paths": {
+    "/digests": {
+      "post": {
+        "tags": [
+          "digests"
+        ],
+        "summary": "Post Digests",
+        "description": "The digests of the items of the window, one per subject with items; a subject whose\nwriting fails is named in failed_subjects, a reading or a classification that fails fails\nthe request.",
+        "operationId": "post_digests_digests_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DigestRequestSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DigestsSchema"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "invalid_api_key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "invalid_parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidParameterSchema"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "internal_error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "data_api_invalid_response, data_api_unauthorized, data_api_unavailable, llm_content_filtered, llm_invalid_output, llm_truncated, llm_unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "llm_rate_limited",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          },
+          "504": {
+            "description": "data_api_timeout, llm_timeout",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorSchema"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ClaimSchema": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "item_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Item Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "item_ids"
+        ],
+        "title": "ClaimSchema"
+      },
+      "DigestRequestSchema": {
+        "properties": {
+          "window_days": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 14.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Window Days",
+            "description": "Absent or null: the window of KB_DIGEST_WINDOW_DAYS."
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "DigestRequestSchema"
+      },
+      "DigestSchema": {
+        "properties": {
+          "subject": {
+            "type": "string",
+            "title": "Subject"
+          },
+          "claims": {
+            "items": {
+              "$ref": "#/components/schemas/ClaimSchema"
+            },
+            "type": "array",
+            "title": "Claims"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/SourceSchema"
+            },
+            "type": "array",
+            "title": "Sources"
+          },
+          "items_not_retained_in_output": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Items Not Retained In Output"
+          },
+          "claims_removed": {
+            "type": "integer",
+            "title": "Claims Removed"
+          },
+          "items_removed_by_checks": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Items Removed By Checks"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subject",
+          "claims",
+          "sources",
+          "items_not_retained_in_output",
+          "claims_removed",
+          "items_removed_by_checks"
+        ],
+        "title": "DigestSchema"
+      },
+      "DigestsSchema": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "title": "Request Id"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model",
+            "description": "The model of KB_LLM_MODEL that wrote the digests; replay for the replay."
+          },
+          "window": {
+            "$ref": "#/components/schemas/WindowSchema"
+          },
+          "digests": {
+            "items": {
+              "$ref": "#/components/schemas/DigestSchema"
+            },
+            "type": "array",
+            "title": "Digests"
+          },
+          "failed_subjects": {
+            "items": {
+              "$ref": "#/components/schemas/FailedSubjectSchema"
+            },
+            "type": "array",
+            "title": "Failed Subjects"
+          },
+          "no_suitable_subject": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "No Suitable Subject",
+            "description": "Items of the classification that no subject suits."
+          },
+          "unanswered": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Unanswered",
+            "description": "Items the classification left without answer, in no digest either."
+          },
+          "items_in": {
+            "type": "integer",
+            "title": "Items In"
+          },
+          "items_truncated": {
+            "type": "integer",
+            "title": "Items Truncated"
+          },
+          "items_dropped_before_writing_stage": {
+            "type": "integer",
+            "title": "Items Dropped Before Writing Stage"
+          },
+          "items_capped": {
+            "type": "boolean",
+            "title": "Items Capped"
+          }
+        },
+        "type": "object",
+        "required": [
+          "request_id",
+          "model",
+          "window",
+          "digests",
+          "failed_subjects",
+          "no_suitable_subject",
+          "unanswered",
+          "items_in",
+          "items_truncated",
+          "items_dropped_before_writing_stage",
+          "items_capped"
+        ],
+        "title": "DigestsSchema"
+      },
+      "ErrorSchema": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "title": "Error"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "ErrorSchema"
+      },
+      "FailedSubjectSchema": {
+        "properties": {
+          "subject": {
+            "type": "string",
+            "title": "Subject"
+          },
+          "stage": {
+            "$ref": "#/components/schemas/Stage"
+          },
+          "error": {
+            "$ref": "#/components/schemas/LlmFailure"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subject",
+          "stage",
+          "error"
+        ],
+        "title": "FailedSubjectSchema"
+      },
+      "InvalidParameterSchema": {
+        "properties": {
+          "error": {
+            "type": "string",
+            "title": "Error"
+          },
+          "parameters": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Parameters"
+          }
+        },
+        "type": "object",
+        "required": [
+          "error",
+          "parameters"
+        ],
+        "title": "InvalidParameterSchema"
+      },
+      "LlmFailure": {
+        "type": "string",
+        "enum": [
+          "llm_invalid_output",
+          "llm_truncated",
+          "llm_content_filtered",
+          "llm_rate_limited",
+          "llm_unavailable",
+          "llm_timeout"
+        ]
+      },
+      "SourceSchema": {
+        "properties": {
+          "item_id": {
+            "type": "integer",
+            "title": "Item Id"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/WatchKind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "kind",
+          "title",
+          "url"
+        ],
+        "title": "SourceSchema",
+        "description": "Read from the data API, never from the output of the model."
+      },
+      "Stage": {
+        "type": "string",
+        "enum": [
+          "classify",
+          "write"
+        ]
+      },
+      "WatchKind": {
+        "type": "string",
+        "enum": [
+          "vulnerability",
+          "advisory",
+          "paper",
+          "release",
+          "newsletter_article"
+        ]
+      },
+      "WindowSchema": {
+        "properties": {
+          "days": {
+            "type": "integer",
+            "title": "Days"
+          },
+          "since": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Since"
+          },
+          "until": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Until"
+          },
+          "capped_kind": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WatchKind"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The kind cut by the cap of the reading; null when nothing is cut."
+          },
+          "covered_after": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Covered After",
+            "description": "The date of the first item of the kind cut left out, excluded: each item of that kind strictly more recent was read; null when nothing is cut."
+          }
+        },
+        "type": "object",
+        "required": [
+          "days",
+          "since",
+          "until",
+          "capped_kind",
+          "covered_after"
+        ],
+        "title": "WindowSchema"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "description": "One key per client, sent as `Authorization: Bearer <key>`. A missing or unknown key gets the same 401 `invalid_api_key`. No login route and no token lifetime: a key is revoked by removing it and restarting the API.",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
